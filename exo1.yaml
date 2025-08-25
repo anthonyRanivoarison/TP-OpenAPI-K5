@@ -1,0 +1,17 @@
+openapi: 3.0.0
+info:
+  title: Simple Ping API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000
+paths:
+  /ping:
+    get:
+      description: Get a simple ping response
+      responses:
+        200:
+          description: Get "pong" word
+          content:
+            text/plain:
+              schema:
+                type: string
