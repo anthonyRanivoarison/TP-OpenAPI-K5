@@ -1,0 +1,51 @@
+openapi: 3.0.3
+info:
+  title: Product Search API
+  version: 1.0.0
+  description: API for searching products
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        name:
+          type: string
+        expiration_datetime:
+          type: string
+          format: date-time
+        price:
+          type: number
+          format: float
+
+  parameters:
+    limit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+      example: 10
+    q:
+      name: q
+      in: query
+      required: false
+      schema:
+        type: string"
+
+paths:
+  /products:
+    get:
+      summary: Get products list
+      parameters:
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/q'
+      responses:
+        '200':
+          description: Products found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
