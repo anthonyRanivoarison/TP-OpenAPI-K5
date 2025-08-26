@@ -1,0 +1,99 @@
+openapi: 3.0.0
+info:
+  title: Product & Order API
+  version: 1.0.0
+  description: API for managing products and orders
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        name:
+          type: string
+        expiration_datetime:
+          type: string
+          format: date-time
+        price:
+          type: number
+          format: float
+
+    Order:
+      type: object
+      properties:
+        identifier:
+          type: integer
+        customer_name:
+          type: string
+        creation_datetime:
+          type: string
+          format: date-time
+        total_amount:
+          type: number
+          format: float
+
+  parameters:
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+      example: 1
+    size:
+      name: size
+      in: query
+      schema:
+        type: integer
+      example: 20
+
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+
+paths:
+  /products:
+    get:
+      tags: [Products]
+      summary: Products list
+      responses:
+        '200':
+          description: Available products
+          content:
+            application/json:
+              schema:
+                type: array
+
+  /orders:
+    get:
+      tags: [Orders]
+      summary: Orders list
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/size'
+      responses:
+        '200':
+          description: Pagination of orders
+          content:
+            application/json:
+              schema:
+                type: array
+
+    post:
+      tags: [Orders]
+      summary: Create a new order
+      security:
+        - basicAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+      responses:
+        '201':
+          description: Order created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
